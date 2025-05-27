@@ -49,9 +49,10 @@ npm run dev
 cd server
 npm install
 node index.js
+```
 
 
-Development Timeline
+## 📅 Development Timeline
 
 | Sprint   | Goal                           |
 | -------- | ------------------------------ |
@@ -63,7 +64,7 @@ Development Timeline
 | Sprint 5 | AI Assistant & Deployment      |
 
 
-🧠 Future Add-ons
+## 🧠 Future Add-ons
 ✨ AI Assistant (GPT-4) for code explanations
 
 🔐 Google OAuth Login
