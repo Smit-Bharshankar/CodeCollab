@@ -7,26 +7,22 @@ const Roomhome = () => {
 
   const [joinRoomIdInput, setJoinRoomIdInput] = useState('');
   const [createRoomIdInput, setCreateRoomIdInput] = useState('');
+  const [userName, setUserName] = useState('');
 
-  // Function to handle creating a new room
   const handleCreateRoom = () => {
     // Generate a brand new UUID when the 'Create Room' button is clicked
     // const newRoomId = uuidv4();
-    if (createRoomIdInput.trim()) {
-      navigate(`/room/${createRoomIdInput.trim()}`);
+    if (createRoomIdInput.trim() && userName.trim()) {
+      navigate(`/room/${createRoomIdInput.trim()}`, { state: { userName } });
     } else {
-      // Use a custom modal or alert for user feedback
-      alert('Please enter a Room ID to create');
+      alert('Please enter a Room ID and UserName to create');
     }
   };
 
-  // Function to handle joining an existing room based on user input
   const handleJoinRoom = () => {
-    // Basic validation: ensure the input is not just empty spaces
     if (joinRoomIdInput.trim()) {
       navigate(`/room/${joinRoomIdInput.trim()}`);
     } else {
-      // Use a custom modal or alert for user feedback
       alert('Please enter a Room ID to join');
     }
   };
@@ -34,11 +30,11 @@ const Roomhome = () => {
   // Handler for changes in the 'Join Room' input field
   // 'event' is explicitly passed as a parameter here, resolving the warning.
   const handleCreateInputChange = (event) => {
-    setCreateRoomIdInput(event.target.value); // Correctly access the input's value
+    setCreateRoomIdInput(event.target.value);
   };
 
   const handleJoinInputChange = (event) => {
-    setJoinRoomIdInput(event.target.value); // Correctly access the input's value
+    setJoinRoomIdInput(event.target.value);
   };
 
   return (
@@ -61,6 +57,12 @@ const Roomhome = () => {
             className="bg-green-800 text-white placeholder-gray-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full mb-4 text-lg"
             value={createRoomIdInput} // Controlled component: value comes from state
             onChange={handleCreateInputChange} // Correct handler: updates state on change
+          />
+          <input
+            type="text"
+            placeholder="Enter UserName"
+            className="bg-green-800 text-white placeholder-gray-400 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 w-full mb-4 text-lg"
+            onChange={(e) => setUserName(e.target.value)} // Correct handler: updates state on change
           />
           <button
             onClick={handleCreateRoom}
