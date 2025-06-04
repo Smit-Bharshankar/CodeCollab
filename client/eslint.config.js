@@ -31,6 +31,7 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactPlugin.configs.recommended.rules,
+      'no-unused-vars': 'off',
       'react/react-in-jsx-scope': 'off', // Not needed for React 17+
       'prettier/prettier': [{ endOfLine: 'lf' }], // <--- CHANGE THIS TO 'lf'
     },
