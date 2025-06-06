@@ -28,4 +28,9 @@ app.use(express.urlencoded({ extended: true, limit: '16kb' })); // for accepting
 app.use(express.static('public')); // for storing assests in public
 app.use(cookieParser()); // for reading and writing cookies in user's browser
 
+// Routes Import
+import codeRoutes from './routes/code.route.js';
+
+app.use('/api/code', codeRoutes);
+
 export { app, allowedOrigins };

@@ -1,0 +1,5 @@
+{
+  "watch": ["."],
+  "ignore": ["CodeSandbox/temp"],
+  "ext": "js,json"
+}
