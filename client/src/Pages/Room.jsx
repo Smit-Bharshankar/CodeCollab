@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import CodeMirror, { oneDark } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { GoSidebarCollapse, GoSidebarExpand } from 'react-icons/go';
@@ -8,6 +9,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 const Room = () => {
   const [toggleSidebar, setToggleSidebar] = useState(true);
   const [code, setCode] = useState('// Write your code here' + '\n'.repeat(9));
+  const [language, setLanguage] = useState('javascript');
+  const [output, setOutput] = useState('');
+
   // This state will now hold the array of user objects received from the server
   const [usersInRoom, setUsersInRoom] = useState([]);
   const [messages, setMessages] = useState([]); // New state to store chat messages
@@ -18,6 +22,19 @@ const Room = () => {
   const userName = location.state?.userName || 'Guest';
 
   const navigate = useNavigate();
+
+  const handleRunCode = async () => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URI}/api/code/run`, {
+        language,
+        code,
+      });
+      setOutput(response.data.data.output);
+      console.log('Code output:', response.data);
+    } catch (error) {
+      setOutput(error?.response?.data?.error || 'Execution failed. See server logs.');
+    }
+  };
 
   useEffect(() => {
     // 1. Emit 'join' event to the server with a callback for error handling
@@ -120,6 +137,25 @@ const Room = () => {
                 </p>
               ))}
             </div>
+          </div>
+
+          <div className="bg-gray-800 h-auto w-auto text-gray-200 p-4">
+            <select
+              className="text-gray-200  bg-gray-600 rounded-md"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+            >
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+            </select>
+            <button className="mx-3 bg-purple-800 px-2 py-1 rounded-lg" onClick={handleRunCode}>
+              {' '}
+              Run
+            </button>
+          </div>
+
+          <div className="text-white font-mono">
+            <pre>{output}</pre>
           </div>
 
           {/* Leave Room Button */}
