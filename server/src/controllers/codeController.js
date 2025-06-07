@@ -15,7 +15,7 @@ const executeCode = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, { output }, 'Code executed successfully'));
   } catch (err) {
     console.error('Execution error:', err);
-    throw new ApiError(500, err.message || 'Execution failed');
+    return res.status(200).json(new ApiResponse(200, { output: err }, 'Code execution failed'));
   }
 });
 
