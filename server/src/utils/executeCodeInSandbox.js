@@ -45,17 +45,21 @@ export const executeCodeInSandbox = async (code, language) => {
 
   return new Promise((resolve, reject) => {
     exec(dockerCommand, { timeout: 5000, maxBuffer: 1024 * 500 }, (error, stdout, stderr) => {
-      // console.log('STDOUT:', stdout);
-      console.log('TRIMMED STDOUT:', stdout.trim());
-      resolve(stdout?.trim() || '[no output]');
+      const trimmedStdout = stdout?.trim();
+      const trimmedStderr = stderr?.trim();
 
-      console.log('STDERR:', stderr);
+      console.log('TRIMMED STDOUT:', trimmedStdout);
+      console.log('TRIMMED STDERR:', trimmedStderr);
+      console.log('Exec Error:', error);
 
       // Clean up temp files
       fs.rmSync(userDir, { recursive: true, force: true });
 
-      if (error) return reject(stderr || error.message);
-      resolve(stdout.trim());
+      if (error || trimmedStderr) {
+        return reject(trimmedStderr || error.message || 'Execution failed');
+      }
+
+      resolve(trimmedStdout || '[no output]');
     });
   });
 };
